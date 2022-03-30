@@ -1,0 +1,44 @@
+/* Query 1 - query used for first insight */
+1.Who are the top 7 artists ?
+
+SELECT Artist.Name AS Artist,
+       count(album.artistid) "Number of Albums"
+FROM Album
+JOIN artist ON album.artistid=artist.ArtistId
+GROUP BY artist.name
+ORDER BY "Number of Albums" DESC
+LIMIT 7;
+
+/* Query 2 - query used for second insight */
+2.Who are the best 6 earning artists?
+
+SELECT Artist.Name AS Artist,
+       SUM(InvoiceLine.Quantity * InvoiceLine.UnitPrice) AS AmountSpent
+FROM Artist
+JOIN Album ON Artist.ArtistId = Album.ArtistId
+JOIN Track ON Track.AlbumId = Album.AlbumId
+JOIN InvoiceLine ON Track.TrackId = InvoiceLine.Trackid
+GROUP BY Artist.Name
+ORDER BY AmountSpent DESC
+LIMIT 6;
+
+/* Query 3 - query used for third insight */
+3.Who are the top 5 customers purchasing music?
+
+SELECT (Customer.FirstName || " " || Customer.LastName) AS CustomerName,
+       sum(invoice.total) AS Total
+FROM Invoice
+INNER JOIN Customer ON Invoice.CustomerId = Customer.CustomerId
+GROUP BY CustomerName
+ORDER BY total DESC
+LIMIT 5;
+
+/* Query 4 - query used for forth insight */
+4.What are the top MediaType format used?
+
+SELECT MediaType.Name AS MediaType,
+       count(Track.MediaTypeId) AS Total
+FROM Track
+JOIN MediaType ON Track.MediaTypeId = MediaType.MediaTypeId
+GROUP BY MediaType.Name
+ORDER BY total DESC;
